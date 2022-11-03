@@ -9,6 +9,7 @@ joinerHeight = 27;
 joinerWallThickness = 3;
 joinerLipGap = 0.2;
 joinerLipHeightGap = 0.5;
+joinerTRRSCutoutDepth = 2;
 
 trrsCutoutWidth = 14;
 trrsCutoutOffsetFromTip = 32;
@@ -128,6 +129,15 @@ module joiner() {
         translate([ 0, 0, joinerHeight + wallLipHeight - joinerLipHeightGap]) 
             linear_extrude(wallLipHeight + joinerLipHeightGap + 1) 
             board(wallThickness + boardGap- wallLipWidth + joinerLipGap);
+
+        translate([ -wallThickness - boardGap - 1, trrsCutoutOffsetFromTip, - 4 ])
+            rotate([ 90, 0, 90 ])
+            linear_extrude(wallThickness + 2)
+            rounded_square(trrsCutoutWidth, joinerTRRSCutoutDepth + 4, 2);
+        translate([ -wallThickness - boardGap - 1, trrsCutoutOffsetFromTip, joinerHeight + wallLipHeight * 2 - joinerTRRSCutoutDepth ])
+            rotate([ 90, 0, 90 ])
+            linear_extrude(wallThickness + 2)
+            rounded_square(trrsCutoutWidth, joinerTRRSCutoutDepth + 4, 2);
     }
 }
 
