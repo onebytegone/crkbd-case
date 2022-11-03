@@ -35,8 +35,9 @@ bottomNutRotation = 30.2;
 bottomNutOffsetX = 14;
 bottomNutOffsetY = 24;
 
-legWall = 2;
+legHeadDiameter = 11;
 legDiameter = 6.2;
+legGap = 1;
 
 $fn=20;
 
@@ -58,10 +59,10 @@ mirror([ 0, 1 ]) baseplate();
 module leg(length, radius = 0.5) {
     $fn = 60;
     difference() {
-        headRadius = footBoltHeadDiameter / 2 + legWall;
+        headRadius = legHeadDiameter / 2;
         union() {
             translate([ -headRadius, -headRadius, radius]) minkowski() {
-                translate([ headRadius, headRadius]) cylinder(r = headRadius - radius, h = legDiameter - radius * 2);
+                translate([ headRadius, headRadius]) cylinder(r = headRadius - radius, h = legDiameter / 1.5 - radius * 2);
                 sphere(r = radius);
             }
             translate([ 0, 0, legDiameter / 2 ]) 
@@ -69,7 +70,7 @@ module leg(length, radius = 0.5) {
                 cylinder(r = legDiameter / 2, h = length);
         }
         translate([ 0, 0, -1 ]) cylinder(r = footBoltDiameter / 2, h = legDiameter + 2);
-        translate([ 0, 0, legDiameter - footBoltHeadDepth ]) cylinder(r = footBoltHeadDiameter / 2, h = footBoltHeadDepth + 1); 
+        translate([ 0, 0, legDiameter / 1.5 ]) cylinder(r = headRadius + legGap, h = legDiameter / 2 + 1);
     }
 }
 
