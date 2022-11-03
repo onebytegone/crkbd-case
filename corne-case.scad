@@ -7,7 +7,7 @@ wallLipWidth = wallThickness / 2;
 
 joinerHeight = 27;
 joinerWallThickness = 3;
-joinerLipGap = 0.1;
+joinerLipGap = 0.2;
 joinerLipHeightGap = 0.5;
 
 trrsCutoutWidth = 14;
