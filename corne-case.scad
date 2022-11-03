@@ -14,8 +14,8 @@ trrsCutoutWidth = 14;
 trrsCutoutOffsetFromTip = 32;
 trrsCutoutOffsetFromBase = 1.5;
 
-usbCutoutWidth = 14;
-usbCutoutOffsetFromEdge = 3;
+usbCutoutWidth = 17.5;
+usbCutoutOffsetFromEdge = -0.5;
 usbCutoutOffsetFromBase = 0;
 usbCutoutOffsetFromTip = 84.5;
 
