@@ -25,7 +25,9 @@ footBoltHeadDepth = 3;
 footNutWidth = 6.5;
 footNutHeight = 7.2;
 footNutThickness = 4;
-footNutMinWall = 1;
+footNutFace = 1.5;
+footNutHoriz = 2;
+footNutVert = 1;
 
 topNutOffset = 80;
 
@@ -137,16 +139,16 @@ module board(offsetRadius = 0) {
 module nutCutout() {
     translate([ 1, 0 ]) 
         rotate([ 0, -90 ])
-        cylinder(r = footBoltDiameter / 2, footNutMinWall + 2);
+        cylinder(r = footBoltDiameter / 2, footNutFace + 2);
     
     translate([ 0, -footNutWidth / 2, -footNutHeight / 2 ]) 
         cube([ footNutThickness + 1, footNutWidth, footNutHeight ]);
 }
 
 module nutBump(radius = 0.5) {
-    width = footNutWidth + footNutMinWall * 2;
-    depth = wallThickness - footNutThickness + footNutMinWall;
-    height = footNutHeight + footNutMinWall * 2;
+    width = footNutWidth + footNutHoriz * 2;
+    depth = wallThickness - footNutThickness + footNutFace;
+    height = footNutHeight + footNutVert * 2;
     translate([ radius - depth, radius - width / 2, radius - height / 2 ]) minkowski(){
         cube([ depth - radius, width - radius * 2, height - radius * 2]);
         sphere(radius);
