@@ -11,8 +11,8 @@ joinerLipGap = 0.2;
 joinerLipHeightGap = 0.5;
 joinerTRRSCutoutDepth = 2;
 
-trrsCutoutWidth = 14;
-trrsCutoutOffsetFromTip = 32;
+trrsCutoutWidth = 15;
+trrsCutoutOffsetFromTip = 31;
 trrsCutoutOffsetFromBase = 1.5;
 
 usbCutoutWidth = 17.5;
