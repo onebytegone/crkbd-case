@@ -11,6 +11,13 @@ joinerLipGap = 0.2;
 joinerLipHeightGap = 0.5;
 joinerTRRSCutoutDepth = 2;
 
+joinerStrapWidth = 25;
+joinerStrapThickness = 3;
+joinerStrapGap = 10;
+joinerStrapOffsetFromEdge = 38;
+joinerStrapDepth = 40;
+
+
 trrsCutoutWidth = 15;
 trrsCutoutOffsetFromTip = 31;
 trrsCutoutOffsetFromBase = 1.5;
@@ -19,6 +26,10 @@ usbCutoutWidth = 17.5;
 usbCutoutOffsetFromEdge = -0.5;
 usbCutoutOffsetFromBase = 0;
 usbCutoutOffsetFromTip = 84.5;
+
+extraUSBSpaceDepth = 0; // 2.245;
+extraUSBSpaceWidth = 22;
+extraUSBSpaceOffsetFromTip = 84.4;
 
 footBoltDiameter = 3;
 footBoltHeadDiameter = 6;
@@ -66,8 +77,8 @@ module leg(length, radius = 0.5) {
                 translate([ headRadius, headRadius]) cylinder(r = headRadius - radius, h = legDiameter / 1.5 - radius * 2);
                 sphere(r = radius);
             }
-            translate([ 0, 0, legDiameter / 2 ]) 
-                rotate([ 0, 90 ]) 
+            translate([ 0, 0, legDiameter / 2 ])
+                rotate([ 0, 90 ])
                 cylinder(r = legDiameter / 2, h = length);
         }
         translate([ 0, 0, -1 ]) cylinder(r = footBoltDiameter / 2, h = legDiameter + 2);
@@ -78,10 +89,10 @@ module leg(length, radius = 0.5) {
 module baseplate() {
     difference() {
         union() {
-            linear_extrude(baseplateWallHeight + baseplateThickness - wallLipHeight) 
+            linear_extrude(baseplateWallHeight + baseplateThickness - wallLipHeight)
                 board(wallThickness + boardGap);
-            translate([ 0, 0, baseplateWallHeight + baseplateThickness - wallLipHeight]) 
-                linear_extrude(wallLipHeight) 
+            translate([ 0, 0, baseplateWallHeight + baseplateThickness - wallLipHeight])
+                linear_extrude(wallLipHeight)
                 board(wallThickness + boardGap - wallLipWidth);
             translate([ -wallThickness - boardGap, topNutOffset, footNutHeight / 2 + baseplateThickness ])
                 nutBump();
@@ -90,26 +101,26 @@ module baseplate() {
                 translate([ -wallThickness - boardGap, bottomNutOffsetY, footNutHeight / 2 + baseplateThickness ])
                 nutBump();
         }
-        translate([ 0, 0, baseplateThickness ]) 
-            linear_extrude(baseplateWallHeight + 1) 
+        translate([ 0, 0, baseplateThickness ])
+            linear_extrude(baseplateWallHeight + 1)
             board(boardGap);
-        translate([ 0, 0, -1 ]) 
-            linear_extrude(baseplateThickness + 2) 
+        translate([ 0, 0, -1 ])
+            linear_extrude(baseplateThickness + 2)
             import("baseplate-holes.svg");
-        
-        translate([ -wallThickness - boardGap - 1, trrsCutoutOffsetFromTip, baseplateThickness + trrsCutoutOffsetFromBase ]) 
+
+        translate([ -wallThickness - boardGap - 1, trrsCutoutOffsetFromTip, baseplateThickness + trrsCutoutOffsetFromBase ])
             rotate([ 90, 0, 90 ])
-            linear_extrude(wallThickness + 2) 
+            linear_extrude(wallThickness + 2)
             rounded_square(trrsCutoutWidth, baseplateWallHeight - trrsCutoutOffsetFromBase + 1);
-        
-        translate([ usbCutoutOffsetFromEdge, usbCutoutOffsetFromTip + boardGap + wallThickness + 1, baseplateThickness + usbCutoutOffsetFromBase ]) 
+
+        translate([ usbCutoutOffsetFromEdge, usbCutoutOffsetFromTip + boardGap + extraUSBSpaceDepth + wallThickness + 1, baseplateThickness + usbCutoutOffsetFromBase ])
             rotate([ 90, 0, 0 ])
-            linear_extrude(wallThickness + 2) 
+            linear_extrude(wallThickness + 2)
             rounded_square(usbCutoutWidth, baseplateWallHeight - usbCutoutOffsetFromBase + 1);
-        
+
         translate([ -footNutThickness - boardGap, topNutOffset, footNutHeight / 2 + baseplateThickness ])
             nutCutout();
-        
+
        translate([ bottomNutOffsetX, 0 ])
             rotate([ 0, 0, bottomNutRotation ])
             translate([ -footNutThickness - boardGap, bottomNutOffsetY, footNutHeight / 2 + baseplateThickness ])
@@ -118,16 +129,16 @@ module baseplate() {
 }
 
 module joiner() {
-    difference() { 
-        linear_extrude(joinerHeight + wallLipHeight * 2) difference() { 
+    difference() {
+        linear_extrude(joinerHeight + wallLipHeight * 2) difference() {
             board(wallThickness + boardGap);
             board(wallThickness + boardGap - joinerWallThickness);
         }
-        translate([ 0, 0, -1]) 
-            linear_extrude(wallLipHeight + joinerLipHeightGap + 1) 
+        translate([ 0, 0, -1])
+            linear_extrude(wallLipHeight + joinerLipHeightGap + 1)
             board(wallThickness + boardGap - wallLipWidth + joinerLipGap);
-        translate([ 0, 0, joinerHeight + wallLipHeight - joinerLipHeightGap]) 
-            linear_extrude(wallLipHeight + joinerLipHeightGap + 1) 
+        translate([ 0, 0, joinerHeight + wallLipHeight - joinerLipHeightGap])
+            linear_extrude(wallLipHeight + joinerLipHeightGap + 1)
             board(wallThickness + boardGap- wallLipWidth + joinerLipGap);
 
         translate([ -wallThickness - boardGap - 1, trrsCutoutOffsetFromTip, - 4 ])
@@ -138,21 +149,32 @@ module joiner() {
             rotate([ 90, 0, 90 ])
             linear_extrude(wallThickness + 2)
             rounded_square(trrsCutoutWidth, joinerTRRSCutoutDepth + 4, 2);
+
+        translate([ joinerStrapOffsetFromEdge, 0, joinerHeight / 2 + wallLipHeight - joinerStrapGap / 2])
+            rotate([ -90, 0, 00 ])
+            linear_extrude(joinerStrapDepth)
+            rounded_square(joinerStrapWidth, joinerStrapThickness, joinerStrapThickness / 3);
+
+        translate([ joinerStrapOffsetFromEdge, 0, joinerHeight / 2 + wallLipHeight + joinerStrapGap / 2 + joinerStrapThickness / 2])
+            rotate([ -90, 0, 00 ])
+            linear_extrude(joinerStrapDepth)
+            rounded_square(joinerStrapWidth, joinerStrapThickness, joinerStrapThickness / 3);
     }
 }
 
-module board(offsetRadius = 0) {  
+module board(offsetRadius = 0) {
     offset(r = offsetRadius) {
         import("baseplate.svg");
+        translate([ 0, extraUSBSpaceOffsetFromTip - 1]) square([ extraUSBSpaceWidth, extraUSBSpaceDepth + 1 ]);
     }
 }
 
 module nutCutout() {
-    translate([ 1, 0 ]) 
+    translate([ 1, 0 ])
         rotate([ 0, -90 ])
         cylinder(r = footBoltDiameter / 2, footNutFace + 2);
-    
-    translate([ 0, -footNutWidth / 2, -footNutHeight / 2 ]) 
+
+    translate([ 0, -footNutWidth / 2, -footNutHeight / 2 ])
         cube([ footNutThickness + 1, footNutWidth, footNutHeight ]);
 }
 
